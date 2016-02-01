@@ -82,6 +82,17 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
     };
 
     $scope.remove = function() {
+      // use the listing in the current view to create an id for deletion
+      var id = $stateParams.listingId;
+      Listings.delete(id)
+        .then(function(response){
+          // if object is succesfully delete redirec back to the list page
+          $state.go('listings.list', {successMessage: 'Listing successfully deleted!'});
+        }, function(){
+          // otherwise display the error
+          $scope.error = 'Unable to delete listing!\n' + error;
+        });
+      console.log(Listings);
       /*
         Implement the remove function. If the removal is successful, navigate back to 'listing.list'. Otherwise, 
         display the error. 
